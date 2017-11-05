@@ -1,0 +1,15 @@
+Une recherche doit retourner en priorité les token avec la même casse (pondéré à la taille de la chaine)
+Ok
+Une recherche doit également retourner les token avec une casse différente
+Ok
+Une recherche avec des caracteres non ascii doit retourner en priorité les token avec ces caracteres nons ascii
+Ok
+Une recherche avec des caracteres non ascii doit également retourner les tokens avec leur equivalent ascii
+Ok
+Une recherche avec des caracteres ascii doit également retourner les tokens avec leur equivalent non ascii
+Ok
+Une recherche doit retourner en priorité les token correspondant à des mots entiers
+Ok
+Une recherche sur une expression doit retourner en priorité les expression exactes
+Ok
+Une recherche sur une expression doit retourner en priorité les expression approchantes

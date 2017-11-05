@@ -1,0 +1,197 @@
+{
+  "template": "*",
+  "settings": {
+    "analysis": {
+      "tokenizer": {
+        "ngram_tokenizer": {
+          "type": "nGram",
+          "min_gram": "2",
+          "max_gram": "15",
+          "token_chars": [
+            "letter",
+            "digit"
+          ]
+        },
+        "edge_ngram_tokenizer": {
+          "type": "edgeNGram",
+          "min_gram": "2",
+          "max_gram": "15",
+          "token_chars": [
+            "letter",
+            "digit"
+          ]
+        }
+      },
+      "filter": {
+        "fr_stop": {
+          "type": "stop",
+          "stopwords_path": "stopwords/fr.txt"
+        },
+        "filter_ngram": {
+          "type": "nGram",
+          "min_gram": 2,
+          "max_gram": 15
+        },
+        "filter_engram": {
+          "type": "edgeNGram",
+          "min_gram": 1,
+          "max_gram": 15
+        },
+        "synonym": {
+          "type": "synonym",
+          "synonyms_path" : "autorities"
+        }
+      },
+      "analyzer": {
+        "case_insensitive_sort": {
+          "tokenizer": "keyword",
+          "filter":  [ "lowercase", "asciifolding" ]
+        },
+        "basic_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "synonym"
+          ]
+        },
+        "ngramindex_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "filter_ngram"
+          ]
+        },
+        "source_ngramindex_analyzer_special": {
+          "type": "custom",
+          "tokenizer": "ngram_tokenizer",
+          "filter": [
+            "lowercase",
+            "asciifolding"
+          ]
+        },
+        "engramindex_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "fr_stop",
+            "filter_engram"
+          ]
+        },
+        "basic_analyzer_special": {
+          "type": "custom",
+          "tokenizer": "keyword",
+          "filter": [
+            "lowercase",
+            "fr_stop",
+            "asciifolding"
+          ]
+        },
+        "ngramindex_analyzer_special": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "filter_ngram",
+            "asciifolding"
+          ]
+        },
+        "engramindex_analyzer_special": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "filter_engram",
+            "asciifolding"
+          ]
+        }
+      }
+    }
+  },
+  "mappings": {
+      "dynamic_templates": [
+        {
+          "field": {
+            "match": "*",
+            "mapping": {
+             "type": "string",
+              "index": "not_analyzed",
+              "term_vector": "with_positions_offsets",
+              "fields": {
+                "source": {
+                  "type": "string",
+                  "norms": {
+                    "enabled": false
+                  },
+                  "index_analyzer": "keyword",
+                  "search_analyzer": "keyword",
+                  "term_vector": "with_positions_offsets"
+                },
+                "sort":{
+                  "type": "string",
+                  "index_analyzer": "case_insensitive_sort",
+                  "search_analyzer": "case_insensitive_sort"
+                },
+                "basic": {
+                  "norms": {
+                    "enabled": false
+                  },
+                  "type": "string",
+                  "term_vector": "with_positions_offsets"
+                },
+                "engram": {
+                  "norms": {
+                    "enabled": false
+                  },
+                  "type": "string",
+                  "search_analyzer": "basic_analyzer",
+                  "index_analyzer": "engramindex_analyzer",
+                  "term_vector": "with_positions_offsets"
+                },
+                "ngram": {
+                  "norms": {
+                    "enabled": false
+                  },
+                  "type": "string",
+                  "index_analyzer": "ngramindex_analyzer",
+                  "search_analyzer": "basic_analyzer",
+                  "term_vector": "with_positions_offsets"
+                },
+                "source_ngramspe": {
+                  "norms": {
+                    "enabled": false
+                  },
+                  "type": "string",
+                  "index_analyzer": "source_ngramindex_analyzer_special",
+                  "search_analyzer": "basic_analyzer_special",
+                  "term_vector": "with_positions_offsets"
+                },
+                "engramspe": {
+                  "norms": {
+                    "enabled": false
+                  },
+                  "type": "string",
+                  "search_analyzer": "basic_analyzer_special",
+                  "index_analyzer": "engramindex_analyzer",
+                  "term_vector": "with_positions_offsets"
+                },
+                "ngramspe": {
+                  "norms": {
+                    "enabled": false
+                  },
+                  "type": "string",
+                  "index_analyzer": "ngramindex_analyzer_special",
+                  "search_analyzer": "basic_analyzer_special",
+                  "term_vector": "with_positions_offsets"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+

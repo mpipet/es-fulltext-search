@@ -1,0 +1,27 @@
+{ "index" : { "_index" : "test_search", "_type" : "test" } }
+{ "text" : "Le Val de la peur" }
+{ "index" : { "_index" : "test_search", "_type" : "test" } }
+{ "text" : "La valeur de la peur est la plus grande" }
+{ "index" : { "_index" : "test_search", "_type" : "test" } }
+{ "text" : "Peur ou est tu?" }
+{ "index" : { "_index" : "test_search", "_type" : "test" } }
+{ "text" : "Tu va bien?" }
+{ "index" : { "_index" : "test_search", "_type" : "test" } }
+{ "text" : "Veritas" }
+{ "index" : { "_index" : "test_search", "_type" : "test" } }
+{ "text" : "Vomis" }
+{ "index" : { "_index" : "test_search", "_type" : "test" } }
+{ "text" : "Téléphone" }
+{ "index" : { "_index" : "test_search", "_type" : "test" } }
+{ "text" : "Television de basse extraction" }
+{ "index" : { "_index" : "test_search", "_type" : "test" } }
+{ "text" : "Télévision ecran plat" }
+{ "index" : { "_index" : "test_search", "_type" : "test" } }
+{ "text" : "Une jolie maison" }
+{ "index" : { "_index" : "test_search", "_type" : "test" } }
+{ "text" : "Ma belle maisonnette" }
+{ "index" : { "_index" : "test_search", "_type" : "test" } }
+{ "text" : "Un bon bandit est un bandit mort" }
+{ "index" : { "_index" : "test_search", "_type" : "test" } }
+{ "text" : "Un bon Test est un test faux" }
+\n

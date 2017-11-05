@@ -1,0 +1,105 @@
+---
+- hosts: all
+
+  tasks:
+    # - name: Add Java 8 repo
+    #   apt_repository:
+    #     repo: 'ppa:webupd8team/java'
+    #   become: yes
+
+    # - name: Add Elasticsearch repository key
+    #   apt_key: url="https://artifacts.elastic.co/GPG-KEY-elasticsearch" 
+    #   state: present
+    #   become: yes
+
+    # - name: Add Elasticsearch repo
+    #   apt_repository:
+    #     repo: deb "https://artifacts.elastic.co/packages/5.x/apt" stable main
+    #   become: yes
+
+    # - name: Update repositories cache
+    #   apt:
+    #     update_cache: yes
+    #   become: yes
+
+    # - name: Accept Java 8 License
+    #   debconf: name='oracle-java8-installer' question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
+    #   become: yes
+
+    # - name: Install Oracle Java 8
+    #   apt: name={{item}} state=latest
+    #   with_items:
+    #     - oracle-java8-installer
+    #     - ca-certificates
+    #     - oracle-java8-set-default
+    #   become: yes
+
+    # - name: Install Elasticsearch
+    #   apt:
+    #     name: elasticsearch
+    #   become: yes
+
+    # - name: Bind Elasticsearch on 0.0.0.0
+    #   lineinfile:
+    #     path: /etc/elasticsearch/elasticsearch.yml
+    #     regexp: '^.*network.host:.*'
+    #     line: 'network.host: 0.0.0.0'
+    #   become: yes
+
+    # - name: Enable and start elasticsearch service
+    #   service:
+    #     name: elasticsearch
+    #     state: restarted
+    #     enabled: yes
+    #   become: yes
+
+    - name: Check elasticsearch template exists
+      uri:
+        url: http://localhost:9200/_template/template
+        method: GET
+        body_format: json
+        headers:
+          Content-Type: "application/json"
+        return_content: yes
+        status_code: 200,404
+      register: response
+
+    - name: Delete elasticsearch template if exists
+      uri:
+        url: http://localhost:9200/_template/template
+        method: DELETE
+        body_format: json
+        headers:
+          Content-Type: "application/json"
+      when: response.status == 200
+
+    - name: Configure elasticsearch template
+      uri:
+        url: http://localhost:9200/_template/template
+        method: PUT
+        body: "{{ lookup('file','es_config.json') }}"
+        body_format: json
+        headers:
+          Content-Type: "application/json"
+
+    - name: Delete elasticsearch indices
+      uri:
+        url: http://localhost:9200/*/
+        method: DELETE
+        body_format: json
+        headers:
+          Content-Type: "application/json"
+
+    - name: Seed elasticsearch index
+      uri:
+        url: http://localhost:9200/_bulk
+        method: POST
+        body: "{{ lookup('file','es_test_data.json') }}"
+        body_format: json
+        headers:
+          Content-Type: "application/json"
+        return_content: yes
+      register: response
+
+    - debug: 
+        msg: "{{response}}"
